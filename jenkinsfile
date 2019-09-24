@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+    options {
+        disableConcurrentBuilds()
+        timeout(time: 30, unit: 'MINUTES')
+    }
+    parameters {
+        string(defaultValue: 'master', description: 'branch to build', name: 'branch')
+    }
+    stages {
+        stage('Gradle wrapper') {
+            steps {
+                sh "gradle wrapper"
+            }
+        }
+        stage('Clean') {
+            steps {
+                sh "gradle clean"
+            }
+        }
+        stage('Unit Tests') {
+            steps {
+                sh "gradle test"
+            }
+        }
+        stage('Build') {
+            steps {
+                sh "gradle build"
+            }
+        }
+    }
+}
