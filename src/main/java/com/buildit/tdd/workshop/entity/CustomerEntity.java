@@ -24,6 +24,4 @@ public class CustomerEntity {
 	private long customerId;
 	private String name;
 	private String phone;
-	private long addressId;
-
 }
