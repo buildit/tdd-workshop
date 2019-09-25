@@ -2,6 +2,8 @@ package com.buildit.tdd.workshop.controller;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
@@ -49,6 +51,22 @@ public class ShippingControllerTest {
 	}
 	
 	// TODO: test for exception throwing conditions for getShippingAvailability()
+
+	@Test
+	public void getShippingAvailability_shouldReturnNotFound_forShippingNotAvailableException() throws ShippingServiceNotAvailableException, ShippingNotAvailableException {
+		when(shippingService.getShippingCostByPincode(anyInt())).thenThrow(ShippingNotAvailableException.class);
+
+		ResponseEntity responseEntity = shippingController.getShippingAvailability(123456);
+		assertEquals(responseEntity.getStatusCode().value(), 404);
+	}
+
+	@Test
+	public void getShippingAvailability_shouldReturnNotFound_forShippingServiceNotAvailableException() throws ShippingServiceNotAvailableException, ShippingNotAvailableException {
+		when(shippingService.getShippingCostByPincode(anyInt())).thenThrow(ShippingServiceNotAvailableException.class);
+
+		ResponseEntity responseEntity = shippingController.getShippingAvailability(123456);
+		assertEquals(responseEntity.getStatusCode().value(), 404);
+	}
 	
 	@Test
 	public void getShippingCost_shouldReturnShippingCost_forServiceablePincode() throws ShippingNotAvailableException, ShippingServiceNotAvailableException {
