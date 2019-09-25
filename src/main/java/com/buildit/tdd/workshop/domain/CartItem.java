@@ -1,8 +1,6 @@
 package com.buildit.tdd.workshop.domain;
 
 
-
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
