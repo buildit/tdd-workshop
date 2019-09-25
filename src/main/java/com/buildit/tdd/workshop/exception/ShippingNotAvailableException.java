@@ -1,6 +1,6 @@
 package com.buildit.tdd.workshop.exception;
 
-public class ShippingNotAvailableException extends Exception{
+public class ShippingNotAvailableException extends Exception {
 	
 	public ShippingNotAvailableException() {
 		super();
