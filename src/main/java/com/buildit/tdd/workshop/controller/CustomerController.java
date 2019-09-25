@@ -20,7 +20,7 @@ public class CustomerController {
 	
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity getCustomer(@PathVariable(value = "id") Long customerId) {
+	public ResponseEntity<Customer> getCustomer(@PathVariable(value = "id") Long customerId) {
 		Customer response;
 		try {
 			response = customerService.getCustomer(customerId);

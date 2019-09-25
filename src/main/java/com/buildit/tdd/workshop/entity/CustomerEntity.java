@@ -20,7 +20,7 @@ import javax.persistence.Table;
 public class CustomerEntity {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long customerId;
 	private String name;
 	private String phone;

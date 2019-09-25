@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class AddressEntity {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long addressId;
 	private long customerId;
 	private String addressLine;
