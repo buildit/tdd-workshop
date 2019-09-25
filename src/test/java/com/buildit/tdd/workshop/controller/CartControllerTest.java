@@ -31,9 +31,6 @@ public class CartControllerTest {
 	@Mock
 	private CartService cartService;
 	
-	@Mock
-	private CustomerService customerService;
-	
 	private Cart cart;
 	private CartItem cartItem;
 	private List<CartItem> cartItems = new ArrayList<CartItem>();
@@ -52,34 +49,30 @@ public class CartControllerTest {
 	@Test
 	public void createCart_shouldCreate_successfully() throws CartNotCreatedException {
 		when(cartService.createCart(customerId)).thenReturn(cart);
-		when(customerService.getCustomer()).thenReturn(customerId);
-		ResponseEntity<Cart> response = cartController.createCart();
+		ResponseEntity<Cart> response = cartController.createCart(customerId);
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertEquals(cart, response.getBody());
 	}
 	
 	@Test
 	public void createCart_shouldReturn_badRequest() throws CartNotCreatedException {
-		when(customerService.getCustomer()).thenReturn((long) 1);
 		when(cartService.createCart(customerId)).thenThrow(new CartNotCreatedException());
-		ResponseEntity<Cart> response = cartController.createCart();
+		ResponseEntity<Cart> response = cartController.createCart(customerId);
 		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 	}
 	
 	@Test
 	public void getCart_shouldReturn_customerCart() throws CartNotFoundException {
-		when(customerService.getCustomer()).thenReturn(customerId);
 		when(cartService.getCart(customerId)).thenReturn(cart);
-		ResponseEntity<Cart> response = cartController.getCart();
+		ResponseEntity<Cart> response = cartController.getCart(customerId);
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertEquals(cart, response.getBody());
 	}
 	
 	@Test
 	public void getCart_shouldReturn_badRequest() throws CartNotFoundException {
-		when(customerService.getCustomer()).thenReturn(customerId);
 		when(cartService.getCart(customerId)).thenThrow(new CartNotFoundException());
-		ResponseEntity<Cart> response = cartController.getCart();
+		ResponseEntity<Cart> response = cartController.getCart(customerId);
 		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 	}
 	

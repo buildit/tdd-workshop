@@ -51,7 +51,7 @@ public class CartServiceTest {
 	@Test
 	public void getCart_shouldReturn_Cart() throws CartNotFoundException {
 		Optional<CartEntity> opt = Optional.ofNullable(cartEntity);
-		when(cartRepository.findByCustomer(Mockito.anyLong())).thenReturn(opt);
+		when(cartRepository.findByCustomerId(Mockito.anyLong())).thenReturn(opt);
 		when(objectMapper.convertValue(cartEntity, Cart.class)).thenReturn(cart);
 		Cart response = cartService.getCart(1);
 		assertEquals(cart, response);

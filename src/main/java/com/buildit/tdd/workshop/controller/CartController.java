@@ -9,13 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController(value = "/cart")
+@RestController
+@RequestMapping(value = "/cart")
 public class CartController {
 	
 	@Autowired
 	CartService cartService;
-	@Autowired
-	CustomerService customerService;
 
 	/**
 	 * This end point creates new cart
@@ -25,8 +24,7 @@ public class CartController {
 	 * @return Empty cart
 	 */
 	@PostMapping
-	public ResponseEntity<Cart> createCart() throws CartNotCreatedException {
-		long customerId = getCustomer();
+	public ResponseEntity<Cart> createCart(@RequestParam long customerId) {
 		try {
 			return ResponseEntity.ok(cartService.createCart(customerId));
 		} catch (CartNotCreatedException e) {
@@ -42,8 +40,7 @@ public class CartController {
 	 * @return Cart associated with customerId
 	 */
 	@GetMapping
-	public ResponseEntity<Cart> getCart() {
-		long customerId = getCustomer();
+	public ResponseEntity<Cart> getCart(@RequestParam long customerId) {
 		try {
 			return ResponseEntity.ok(cartService.getCart(customerId));
 		} catch (CartNotFoundException e) {
@@ -59,13 +56,13 @@ public class CartController {
 	 * @param cartId Id of the cart
 	 * @return Response
 	 */
-	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<?> deleteCart(@PathVariable(value = "/{id}") Long cartId) {
+	@DeleteMapping(value = "/{cartId}")
+	public ResponseEntity<?> deleteCart(@PathVariable Long cartId) {
 		cartService.deleteCart(cartId);
 		return ResponseEntity.ok().build();
 	}
-	
+
 	private long getCustomer() {
-		return customerService.getCustomer();
+		return 1;
 	}
 }
