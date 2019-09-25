@@ -1,5 +1,10 @@
 package com.buildit.tdd.workshop.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+
+import java.util.Optional;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,6 +38,7 @@ public class CustomerServiceTest {
 	@Before
 	public void setup() {
 		
+		customerEntity = customerEntity.builder().name("Simar").phone("9876543210").build();
 		customer = customer.builder().name("Simar").phone("9876543210").build();
 		
 	}
@@ -40,13 +46,26 @@ public class CustomerServiceTest {
 	
 	
 	@Test
-	public void getCustomer_shouldReturnCustomerDetails_whenCustomerExists() {
+	public void getCustomer_shouldReturnCustomerDetails_whenCustomerExists() throws CustomerNotFoundException {
+		customerEntity.setCustomerId(1L);
+		customer.setCustomerId(1L);
+		Optional customerEntityOptional = Optional.ofNullable(customerEntity);
 		
+		when(customerRepository.findById(1L)).thenReturn(customerEntityOptional);
+		when(objectMapper.convertValue(customerEntityOptional.get(), Customer.class)).thenReturn(customer);
+		
+		Customer response = customerService.getCustomer(1L);
+		
+		assertEquals(1L, response.getCustomerId());
+		assertEquals("Simar", response.getName());		
+		assertEquals(1L, response.getCustomerId());		
+		assertEquals("9876543210", response.getPhone());		
 	}
 	
 	@Test(expected = CustomerNotFoundException.class)
 	public void getCustomer_shouldRaiseDoesNotExistsException_whenCustomerIdNotFound() throws CustomerNotFoundException {
-//		when(customerRepository.findById((1L)).then
+		when(customerRepository.findById((1L))).thenReturn(Optional.empty());
+		customerService.getCustomer(1L);
 		
 	}
 
