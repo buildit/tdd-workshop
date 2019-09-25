@@ -1,8 +1,5 @@
 package com.buildit.tdd.workshop.entity;
 
-import java.sql.Date;
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,14 +16,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "orders")
-public class OrderEntity {
-
+@Table(name = "address")
+public class AddressEntity {
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	private long orderId;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long addressId;
 	private long customerId;
-	private Date orderDate;
-	private long cartId;
-	private double totalAmount;
+	private String addressLine;
+	private String city;
+	private String state;
+	private int pincode;
+
 }
+
+
+
