@@ -3,6 +3,7 @@ package com.buildit.tdd.workshop.service;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +35,7 @@ public class OrderServiceTest {
 	
 	private Order order;
 	private OrderEntity orderEntity;
+	private OrderEntity orderEntityRequest;
 	private List<Order> orderList = new ArrayList<>();
 	private List<OrderEntity> orderEntityList = new ArrayList<>();
 	
@@ -42,8 +44,10 @@ public class OrderServiceTest {
 	
 	@Before
 	public void setup() {
-		order = Order.builder().cartId(1L).customerId(1L).orderDate(null).orderId(1L).totalAmount(100.0).build();
-		orderEntity = OrderEntity.builder().cartId(1L).customerId(1L).orderDate(null).orderId(1L).totalAmount(100.0).build();
+		Date date = Date.valueOf("2019-01-01");
+		order = Order.builder().cartId(1L).customerId(1L).orderDate(date).orderId(1L).totalAmount(100.0).build();
+		orderEntity = OrderEntity.builder().cartId(1L).customerId(1L).orderDate(date).orderId(1L).totalAmount(100.0).build();
+		orderEntityRequest = OrderEntity.builder().cartId(1L).customerId(1L).orderDate(date).totalAmount(100.0).build();;
 		orderEntityList.add(orderEntity);
 		orderList.add(order);
 	}
@@ -72,15 +76,16 @@ public class OrderServiceTest {
 		assertEquals(order.getCartId(), response.getCartId());
 	}
 	
-	@Test
+	@Test(expected = OrderNotFoundException.class)
 	public void getOrder_shouldThrowOrderNotFoundException_whenOrderExists() throws OrderNotFoundException {
-		Optional orderEntityOptional = Optional.ofNullable(orderEntity);
 		
-		when(orderRepository.findById(VALID_ORDER_ID)).thenReturn(orderEntityOptional);
-		when(objectMapper.convertValue(orderEntity, Order.class)).thenReturn(order);
+		when(orderRepository.findById(INVALID_ORDER_ID)).thenReturn(Optional.empty());
 		
-		Order response = orderService.getOrder(VALID_ORDER_ID);
-		
-		assertEquals(order.getCartId(), response.getCartId());
+		orderService.getOrder(INVALID_ORDER_ID);
+	}
+	
+	@Test
+	public void createOrder_shouldReturnOrder_forValidRequest() {
+		// TODO: write tests
 	}
 }
